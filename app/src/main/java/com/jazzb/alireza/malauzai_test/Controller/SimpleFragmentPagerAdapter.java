@@ -1,4 +1,4 @@
-package com.jazzb.alireza.malauzai_test;
+package com.jazzb.alireza.malauzai_test.Controller;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

@@ -1,38 +1,29 @@
-package com.jazzb.alireza.malauzai_test;
+package com.jazzb.alireza.malauzai_test.Controller;
 
 import android.annotation.SuppressLint;
 import android.graphics.Point;
-import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.widget.Toast;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.jazzb.alireza.malauzai_test.View.FirstFragment;
 import com.jazzb.alireza.malauzai_test.Model.Flickr.Flickr;
-import com.jazzb.alireza.malauzai_test.Model.Flickr.FlickrConstants;
 import com.jazzb.alireza.malauzai_test.Model.Flickr.FlickrPhoto;
 import com.jazzb.alireza.malauzai_test.Model.Flickr.VolleyCallBack;
+import com.jazzb.alireza.malauzai_test.R;
 import com.jazzb.alireza.malauzai_test.Utils.NetworkCheck;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,7 +45,6 @@ public class MainActivity extends FragmentActivity implements Observer {
     private ViewPager viewPager;
     private SimpleFragmentPagerAdapter adapter;
 
-//    private int mTouchSlop;
     private float mPrevX;
     int j = 1;
 
@@ -88,10 +78,6 @@ public class MainActivity extends FragmentActivity implements Observer {
         requestPhoto();
 
         swipListenerFunc();
-
-
-
-//
 
     }
 
