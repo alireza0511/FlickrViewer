@@ -46,8 +46,10 @@ public class Flickr {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        String photoResult = queryUtils(String.valueOf(response));
-                        callback.onSuccessResponse(photoResult);
+                        if (queryUtils(String.valueOf(response)) != null) {
+                            String photoResult = queryUtils(String.valueOf(response));
+                            callback.onSuccessResponse(photoResult);
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -76,11 +78,15 @@ public class Flickr {
 
         try {
             JSONObject baseJsonResponse = new JSONObject(object);
-            JSONObject rootObject = baseJsonResponse.getJSONObject(flickrConstants.responseKeyPhotos());
-            JSONArray rootPhotoArray = rootObject.getJSONArray(flickrConstants.responseKeyPhoto());
 
-            return String.valueOf(rootPhotoArray);
+            if (baseJsonResponse.getString(flickrConstants.responseKeyStatus()).equals(flickrConstants.responseValueOKStatus())) {
+                JSONObject rootObject = baseJsonResponse.getJSONObject(flickrConstants.responseKeyPhotos());
+                JSONArray rootPhotoArray = rootObject.getJSONArray(flickrConstants.responseKeyPhoto());
 
+                return String.valueOf(rootPhotoArray);
+            }else {
+                return null;
+            }
         } catch (JSONException e) {
             // If an error is thrown when executing any of the above statements in the "try" block,
             // catch the exception here, so the app doesn't crash. Print a log message
