@@ -20,21 +20,6 @@ public class SimpleFragmentPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
 
         return this.fragments.get(position);
-//        if (position == 0) {
-//            return new FirstFragment();
-//        } else if (position == 1) {
-//
-//            return new SecondFragment();
-//        } else if (position == 2) {
-//
-//            return new ThirdFragment();
-//        } else if (position == 3) {
-//
-//            return new ForthFragment();
-//        } else {
-//
-//            return new FifthFragment();
-//        }
     }
 
     @Override

@@ -39,8 +39,6 @@ public class FlickrPhoto extends Observable {
 
     public void setUrl(String url) {
         this.url = url;
-
-
     }
 
     public void setTitle(String title) {

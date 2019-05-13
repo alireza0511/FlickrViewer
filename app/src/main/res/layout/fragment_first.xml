@@ -15,9 +15,9 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:textColor="@android:color/white"
-        android:textSize="20sp"
+        android:textSize="@dimen/text_font_size"
         android:gravity="center"
-        android:padding="8dp"
+        android:padding="@dimen/tv_padding_size"
         android:textAlignment="center"
         android:text="@string/hello_blank_fragment" />
 
