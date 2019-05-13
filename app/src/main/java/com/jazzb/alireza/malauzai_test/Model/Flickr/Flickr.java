@@ -3,7 +3,6 @@ package com.jazzb.alireza.malauzai_test.Model.Flickr;
 
 import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -11,17 +10,12 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.google.gson.JsonObject;
-import com.jazzb.alireza.malauzai_test.MainActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Flickr {
@@ -52,7 +46,7 @@ public class Flickr {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        String photoResult = quiryUtils(String.valueOf(response));
+                        String photoResult = queryUtils(String.valueOf(response));
                         callback.onSuccessResponse(photoResult);
                     }
                 }, new Response.ErrorListener() {
@@ -78,18 +72,16 @@ public class Flickr {
         mRequestQueue.add(request);
     }
 
-    private String quiryUtils(String object){
+    private String queryUtils(String object){
 
         try {
             JSONObject baseJsonResponse = new JSONObject(object);
-            JSONObject rootObject = baseJsonResponse.getJSONObject("photos");
-            JSONArray mainRootArray = rootObject.getJSONArray("photo");
+            JSONObject rootObject = baseJsonResponse.getJSONObject(flickrConstants.responseKeyPhotos());
+            JSONArray rootPhotoArray = rootObject.getJSONArray(flickrConstants.responseKeyPhoto());
 
-            return String.valueOf(mainRootArray);
+            return String.valueOf(rootPhotoArray);
 
         } catch (JSONException e) {
-            /** 1- imperovment */
-
             // If an error is thrown when executing any of the above statements in the "try" block,
             // catch the exception here, so the app doesn't crash. Print a log message
             // with the message from the exception.

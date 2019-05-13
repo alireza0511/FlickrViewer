@@ -28,6 +28,7 @@ import com.jazzb.alireza.malauzai_test.Model.Flickr.Flickr;
 import com.jazzb.alireza.malauzai_test.Model.Flickr.FlickrConstants;
 import com.jazzb.alireza.malauzai_test.Model.Flickr.FlickrPhoto;
 import com.jazzb.alireza.malauzai_test.Model.Flickr.VolleyCallBack;
+import com.jazzb.alireza.malauzai_test.Utils.NetworkCheck;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,6 +47,7 @@ public class MainActivity extends FragmentActivity implements Observer {
 
     private Flickr flickr;
     private FlickrPhoto flickrPhoto;
+    private NetworkCheck networkCheck;
     private RequestQueue mRequestQueue;
     private Gson gson;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -69,6 +71,7 @@ public class MainActivity extends FragmentActivity implements Observer {
 
         flickr = new Flickr();
         flickrPhoto = new FlickrPhoto();
+        networkCheck = new NetworkCheck();
         flickrPhoto.addObserver(this);
         mListeners = new ArrayList<>();
 
@@ -126,35 +129,41 @@ public class MainActivity extends FragmentActivity implements Observer {
 
     private void requestPhoto() {
 
-        flickr.getRequestFlickr(mRequestQueue, String.valueOf(j), new VolleyCallBack() {
-            @Override
-            public void onSuccessResponse(String result) {
-                swipeRefreshLayout.setRefreshing(false);
+        if (networkCheck.isConnect(this)) {
+            flickr.getRequestFlickr(mRequestQueue, String.valueOf(j), new VolleyCallBack() {
+                @Override
+                public void onSuccessResponse(String result) {
+                    swipeRefreshLayout.setRefreshing(false);
 
-                List<FlickrPhoto> photos = Arrays.asList(gson.fromJson(result, FlickrPhoto[].class));
+                    List<FlickrPhoto> photos = Arrays.asList(gson.fromJson(result, FlickrPhoto[].class));
 
-                for (int i=0; i< photos.size(); i++) {
-                    flickrPhoto.setList(i , photos.get(i));
+                    for (int i = 0; i < photos.size(); i++) {
+                        flickrPhoto.setList(i, photos.get(i));
+                    }
+
+                    if (firstSet) {
+
+                        List<Fragment> fragments = getFragments();
+                        // Create an adapter that knows which fragment should be shown on each page
+                        adapter = new SimpleFragmentPagerAdapter(getSupportFragmentManager(), fragments);
+                        // Set the adapter onto the view pager
+                        viewPager.setAdapter(adapter);
+                    }
+                    firstSet = false;
                 }
 
-                if (firstSet) {
+                @Override
+                public void onFailureResponse(VolleyError error) {
+                    Log.e("PostActivity", error.toString());
 
-                    List<Fragment> fragments = getFragments();
-                    // Create an adapter that knows which fragment should be shown on each page
-                    adapter = new SimpleFragmentPagerAdapter(getSupportFragmentManager(), fragments);
-                    // Set the adapter onto the view pager
-                    viewPager.setAdapter(adapter);
                 }
-                firstSet = false;
-            }
+            });
+            j += 1;
+        } else {
 
-            @Override
-            public void onFailureResponse(VolleyError error) {
-            Log.e("PostActivity", error.toString());
-
-            }
-        });
-        j += 1;
+            Toast.makeText(this, R.string.msg_no_connection, Toast.LENGTH_SHORT).show();
+            Log.e("MainActivity", "network problem");
+        }
 
     }
 
